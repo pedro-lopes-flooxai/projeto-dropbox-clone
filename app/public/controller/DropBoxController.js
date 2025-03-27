@@ -19,6 +19,9 @@ class DropBoxController {
       this.nameFileEl = this.snackModalEl.querySelector('.filename')
       this.timeleftEl = this.snackModalEl.querySelector('.timeleft')
   
+      this.listFilesEl = document.querySelector('#list-of-files-and-directories');
+
+      this.connectFirebase();
       this.initEvents();
     }
 
@@ -47,6 +50,9 @@ class DropBoxController {
       });
   
       this.inputFilesEl.addEventListener("change", (event) => {
+      
+        this.btnSendFileEl.disabled = true;
+
         this.uploadTask(event.target.files).then(responses =>{
 
           responses.forEach(resp=>{
@@ -55,6 +61,12 @@ class DropBoxController {
 
             this.getFirebaseRef().push().set(resp.files['input-files']);
 
+            this.uploadComplete();
+
+          }).catch(err=>{
+
+            this.uploadComplete();
+            console.error(err);
           });
 
           this.modalShow(false);
@@ -66,6 +78,13 @@ class DropBoxController {
         this.inputFilesEl.value = "";
   
       });
+    }
+
+    uploadComplete(){
+
+      this.modalShow(false);
+      this.inputFilesEl.value = '';
+      this.btnSendFileEl.disable = false;
     }
   
     getFirebaseRef(){
@@ -117,6 +136,7 @@ class DropBoxController {
         }));
 
         });
+    }
 
     modalShow(show = true) {
       this.snackModalEl.style.display = (show) ? "block" : "none"
@@ -383,6 +403,12 @@ class DropBoxController {
   
     getFileView(file) {
       return `
+
+      let li = document.createElement('li');
+
+      li.dataset.key = key;
+
+      li.innerHTML = `
         <li>
           ${this.getFileIconView(file)}
           <div class="name text-center">${file.name}s</div>
