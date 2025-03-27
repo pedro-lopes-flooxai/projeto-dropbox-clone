@@ -414,7 +414,31 @@ class DropBoxController {
           <div class="name text-center">${file.name}s</div>
         </li>
       `
+
+      return li;
+       
     }
   
+    readFiles(){
+
+    this.getFirebaseRef().on('value', snapshot =>{
+
+      this.listFilesEl.innerHTML = '';
+
+      snapshot.forEach(snapshotItem =>{
+
+        let key = snapshotItem.key;
+        let data = snapshotItem.val();
+
+        console.log(key, data);
+
+        this.listFilesEl.appendChild(this.getFileView(data, key));
+
+      });
+
+    });
+
+    }
+
   }
   
