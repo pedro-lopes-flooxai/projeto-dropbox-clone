@@ -23,6 +23,7 @@ class DropBoxController {
 
       this.connectFirebase();
       this.initEvents();
+      this.readFiles();
     }
 
     initEvents(){
@@ -57,7 +58,6 @@ class DropBoxController {
 
           responses.forEach(resp=>{
 
-            console.log(resp.files['input-file']);
 
             this.getFirebaseRef().push().set(resp.files['input-files']);
 
@@ -75,7 +75,6 @@ class DropBoxController {
   
         this.modalShow();
   
-        this.inputFilesEl.value = "";
   
       });
     }
@@ -402,7 +401,6 @@ class DropBoxController {
     }
   
     getFileView(file) {
-      return `
 
       let li = document.createElement('li');
 
@@ -415,6 +413,7 @@ class DropBoxController {
         </li>
       `
 
+      this.initEventsLi(li);
       return li;
        
     }
@@ -438,6 +437,15 @@ class DropBoxController {
 
     });
 
+    }
+
+    initEventsLi(li){
+
+      li.addEventListener('click', e=>{
+
+        li.classList.toggle('selected');
+
+      });
     }
 
   }
