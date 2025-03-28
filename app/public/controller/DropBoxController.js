@@ -541,6 +541,24 @@ class DropBoxController {
   }
 
   initEventsLi(li) {
+
+    li.addEventListener('dblclick', e => {
+
+      let file = JSON.parse(li.dataset.file);
+
+      switch (file.type) {
+        case 'folder':
+          this.currentFolder.push(file.name)
+          this.openFolder()
+          break;
+
+        default:
+          window.open(file.path);
+      }
+
+    })
+
+
     li.addEventListener("click", (e) => {
       if (e.shiftKey) {
         let firstLi = this.listFilesEl.querySelector(".selected");
