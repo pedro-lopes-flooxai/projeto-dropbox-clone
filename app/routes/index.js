@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var formidable = require('formidable');
+var formidable = require('formidable')
 var fs = require('fs');
 
 /* GET home page. */
@@ -18,7 +18,7 @@ router.get('/file', (req, res)=>{
 
       if (err){
 
-        console.error(err);
+        console.log(err);
         res.status(400).json({
           error: err
         });
@@ -95,8 +95,6 @@ router.post('/upload', (req, res)=>{
     });
 
   });
-
-  res.json(req.body);
 
 });
 
